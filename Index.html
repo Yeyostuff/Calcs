@@ -7,22 +7,25 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
     <title>Cálculos</title>
 </head>
 <body>
     <h3>By Yeyostuff</h3>
-    <h2>Calculo de pesos a quetzales</h2>
-    <input id="pesos" placeholder="Pesos aquí">
-    <button id="calcularButton" onclick="conversionPesos()">CALCULAR</button>
-    <button id="clear" onclick="clear()">BORRAR</button>
-    <p id="result"></p>
 
-    <h2>Calculo de Dólares a quetzales</h2>    
-    <input id="usdinput" placeholder="Usd aquí">
-    <button id="usd" onclick="conversionUsd()">CALCULAR</button>
-    <p id="resultUSD"></p>
+    <div class="island">
+        <h2>Calculo de pesos a quetzales</h2>
+        <input id="pesos" placeholder="Pesos aquí">
+        <button id="calcularButton" onclick="conversionPesos()">CALCULAR</button>
+        <p id="result"></p>
+    </div>
 
+    <div class="island">
+        <h2>Calculo de Dólares a quetzales</h2>    
+        <input id="usdinput" placeholder="Usd aquí">
+        <button id="usd" onclick="conversionUsd()">CALCULAR</button>
+        <p id="resultUSD"></p>    
+    </div>
 
 
     <script src="./Script.js"></script>
