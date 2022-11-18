@@ -11,19 +11,19 @@ h2{
     color: white;
 }
 
-#result,#resultUSD{
+#result, #deposito{
     font-size: 30px;
     height: 50px;
     color: aqua;
 }
 
-#pesos, #usdinput{
+#pesos{
     width: 250px;
     height: 30px;
     font-size: 20px;
 }
 
-#calcularButton, #usd {
+#calcularButton {
     width: 180px;
     height: 40px;
     font-size: 20px;
