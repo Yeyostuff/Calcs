@@ -6,6 +6,8 @@ const dResult = document.querySelector('#deposito')
 const totalPesos = document.querySelector("#total");
 const btn2 = document.querySelector("#porcentajeButton");
 const costoProducto = document.querySelector("#calculo");
+const costoCliente = document.querySelector("#calculoCliente");
+const ganancia = document.querySelector("#calculoGanancia");
 const tipoDeCambio = document.querySelector("#cambio");
 const porcentaje = document.querySelector("#porcentaje");
 
@@ -32,7 +34,7 @@ function conversionPesos() {
 function calculoPorcentajes() {
     // Convertir los valores a números
     const totalPesosValue = parseFloat(totalPesos.value);
-    const porcentajeValue = parseFloat(porcentaje.value)/100; // Asegúrate de que esto sea un input
+    const porcentajeValue = parseFloat(porcentaje.value) / 100; // Asegúrate de que esto sea un input
     const tipoDeCambioValue = parseFloat(tipoDeCambio.value);
 
     // Verificar que los valores sean números válidos
@@ -43,11 +45,15 @@ function calculoPorcentajes() {
 
     const menosPorcentaje = totalPesosValue - (totalPesosValue * porcentajeValue);
     const totalQuetzales = menosPorcentaje / tipoDeCambioValue;
+    const totalCliente = totalPesosValue / tipoDeCambioValue; // Cambiado a tipoDeCambioValue
+    const calculoGanancia = totalCliente - totalQuetzales;
 
     // Verificar que el resultado no sea NaN
-    if (isNaN(totalQuetzales)) {
+    if (isNaN(totalQuetzales) || isNaN(totalCliente) || isNaN(calculoGanancia)) {
         costoProducto.innerText = "Error en el cálculo";
     } else {
-        costoProducto.innerText = totalQuetzales + " Quetzales";
+        costoProducto.innerText = totalQuetzales.toFixed(2) + " Quetzales";
+        costoCliente.innerText = totalCliente.toFixed(2) + " Quetzales"; // Agregado espacio
+        ganancia.innerText = calculoGanancia.toFixed(2) + " Quetzales"; // Agregado espacio
     }
 }

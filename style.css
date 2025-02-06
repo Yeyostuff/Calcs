@@ -11,7 +11,7 @@ h2{
     color: white;
 }
 
-#result, #deposito, #calculo{
+#result, #deposito, #calculo, #calculoCliente, #calculoGanancia{
     font-size: 30px;
     height: 50px;
     color: rgb(255, 255, 255);
