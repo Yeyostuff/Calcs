@@ -11,13 +11,20 @@ h2{
     color: white;
 }
 
-#result, #deposito, #calculo, #calculoCliente, #calculoGanancia{
+#result, #deposito, #calculo, #calculoCliente, #calculoGanancia {
     font-size: 30px;
     height: 50px;
     color: rgb(255, 255, 255);
 }
 
-#pesos, #cambio, #porcentaje, #total{
+#utilidad {
+    font-size: 30px;
+    height: 50px;
+    color: rgb(251, 255, 0);
+    font-weight: 600;
+}
+
+#pesos, #cambio, #porcentaje, #total, #costoProd{
     width: 250px;
     height: 30px;
     font-size: 20px;
@@ -41,3 +48,10 @@ h2{
     border: 2px solid rgb(37, 37, 37);
 }
 
+.island2{
+    background-color: rgb(247, 43, 43);
+    padding: 40px;
+    margin: 20px;
+    border-radius: 100px;
+    border: 2px solid rgb(37, 37, 37);
+}
