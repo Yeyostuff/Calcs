@@ -1,61 +1,119 @@
-const cantidadPesos = document.querySelector("#pesos");
-const costoProd = document.querySelector("#costoProd");
-const btn = document.querySelector("#calcularButton");
-const pResult = document.querySelector("#result");
-const dResult = document.querySelector('#deposito')
-const utilidad = document.querySelector('#utilidad')
+const COD_COMMISSION_RATE = 0.04;
+const COD_SHIPPING_FEE = 34;
 
-const totalPesos = document.querySelector("#total");
-const btn2 = document.querySelector("#porcentajeButton");
-const costoProducto = document.querySelector("#calculo");
-const costoCliente = document.querySelector("#calculoCliente");
-const tipoDeCambio = document.querySelector("#cambio");
-const porcentaje = document.querySelector("#porcentaje");
+const EBAY_TAX_RATE = 0.07;
+const EBAY_EXCHANGE_RATE = 8;
+const EBAY_IMPORT_RATE = 0.35;
 
-const envioForza = 27.5;
-const comision = .04;
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
 
-if(btn){
-    btn.addEventListener("click", conversionPesos);
+function switchTab(tabId) {
+    tabButtons.forEach((button) => {
+        const isActive = button.dataset.tab === tabId;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    tabContents.forEach((content) => {
+        const isActive = content.id === tabId;
+        content.classList.toggle('active', isActive);
+        content.hidden = !isActive;
+    });
 }
 
-if(btn2){
-    btn2.addEventListener("click", calculoPorcentajes);
+tabButtons.forEach((button) => {
+    button.addEventListener('click', () => switchTab(button.dataset.tab));
+});
+
+function formatQuetzales(value) {
+    return `Q${value.toFixed(2)}`;
 }
 
-
-function conversionPesos() {
-    const menosEnvio = cantidadPesos.value - envioForza;
-    pResult.innerText = menosEnvio + " Quetzales";
-    const aDepositar = cantidadPesos.value * comision;
-    const totalTotal = menosEnvio - aDepositar;
-    dResult.innerText = totalTotal + ' Quetzales';
-    const utilidadNeta = totalTotal - costoProd.value;
-    utilidad.innerText = utilidadNeta + " Quetzales";
-
+function formatDollars(value) {
+    return `$${value.toFixed(2)}`;
 }
 
-function calculoPorcentajes() {
-    // Convertir los valores a números
-    const totalPesosValue = parseFloat(totalPesos.value);
-    const porcentajeValue = parseFloat(porcentaje.value); // Asegúrate de que esto sea un input
-    const tipoDeCambioValue = parseFloat(tipoDeCambio.value);
+// ----------------------------
+// Calculadora COD
+// ----------------------------
+const codTotal = document.querySelector('#codTotal');
+const codButton = document.querySelector('#codButton');
+const codCommission = document.querySelector('#codCommission');
+const codDeposit = document.querySelector('#codDeposit');
 
-    // Verificar que los valores sean números válidos
-    if (isNaN(totalPesosValue) || isNaN(porcentajeValue) || isNaN(tipoDeCambioValue)) {
-        costoProducto.innerText = "Error: Valores inválidos";
+function calculateCOD() {
+    const total = parseFloat(codTotal.value);
+
+    if (Number.isNaN(total) || total < 0) {
+        codCommission.textContent = 'Ingresa un monto válido';
+        codDeposit.textContent = 'Q0.00';
         return;
     }
 
-    const totalQuetzales = totalPesosValue / tipoDeCambioValue;
-    const calculoGanancia = porcentajeValue - totalQuetzales;
+    const commissionAmount = total * COD_COMMISSION_RATE;
+    const deposit = total - commissionAmount - COD_SHIPPING_FEE;
 
-    // Verificar que el resultado no sea NaN
-    if (isNaN(totalQuetzales) || isNaN(calculoGanancia)) {
-        costoProducto.innerText = "Error en el cálculo";
-    } else {
-        costoCliente.innerText = totalQuetzales.toFixed(2) + " Quetzales"; // Agregado espacio
-        costoProducto.innerText = calculoGanancia.toFixed(2) + " Quetzales";
-        ganancia.innerText = calculoGanancia.toFixed(2) + " Quetzales"; // Agregado espacio
-    }
+    codCommission.textContent = formatQuetzales(commissionAmount);
+    codDeposit.textContent = formatQuetzales(deposit);
 }
+
+codButton.addEventListener('click', calculateCOD);
+codTotal.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') calculateCOD();
+});
+
+// ----------------------------
+// Cálculos eBay
+// ----------------------------
+const ebayItemCost = document.querySelector('#ebayItemCost');
+const ebayShipping = document.querySelector('#ebayShipping');
+const ebayTaxes = document.querySelector('#ebayTaxes');
+const ebayButton = document.querySelector('#ebayButton');
+const ebayUsdTotal = document.querySelector('#ebayUsdTotal');
+const ebayQtzTotal = document.querySelector('#ebayQtzTotal');
+const ebayImport = document.querySelector('#ebayImport');
+const ebayGrandTotal = document.querySelector('#ebayGrandTotal');
+
+function calculateEbayTaxes() {
+    const itemCost = parseFloat(ebayItemCost.value) || 0;
+    const shipping = parseFloat(ebayShipping.value) || 0;
+    const taxes = (itemCost + shipping) * EBAY_TAX_RATE;
+
+    ebayTaxes.value = taxes.toFixed(2);
+    return taxes;
+}
+
+function calculateEbay() {
+    const itemCost = parseFloat(ebayItemCost.value);
+    const shipping = parseFloat(ebayShipping.value);
+
+    if (Number.isNaN(itemCost) || itemCost < 0 || Number.isNaN(shipping) || shipping < 0) {
+        ebayUsdTotal.textContent = 'Datos inválidos';
+        ebayQtzTotal.textContent = 'Q0.00';
+        ebayImport.textContent = 'Q0.00';
+        ebayGrandTotal.textContent = 'Q0.00';
+        return;
+    }
+
+    const taxes = calculateEbayTaxes();
+    const totalUsd = itemCost + shipping + taxes;
+    const totalQtz = totalUsd * EBAY_EXCHANGE_RATE;
+    const importCost = totalQtz * EBAY_IMPORT_RATE;
+    const grandTotal = totalQtz + importCost;
+
+    ebayUsdTotal.textContent = formatDollars(totalUsd);
+    ebayQtzTotal.textContent = formatQuetzales(totalQtz);
+    ebayImport.textContent = formatQuetzales(importCost);
+    ebayGrandTotal.textContent = formatQuetzales(grandTotal);
+}
+
+[ebayItemCost, ebayShipping].forEach((input) => {
+    input.addEventListener('input', calculateEbayTaxes);
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') calculateEbay();
+    });
+});
+
+ebayButton.addEventListener('click', calculateEbay);
+calculateEbayTaxes();
